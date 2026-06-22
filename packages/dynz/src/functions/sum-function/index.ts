@@ -33,14 +33,29 @@ export type SumFunction<TValue extends ParamaterValue[] = never> = {
  * @see {@link multiply} - Multiplication transformer
  * @see {@link divide} - Division transformer
  */
-export function sum<const T extends ParamaterValue<number> | number>(value: T): SumFunction<[ToParam<T>]>;
-export function sum<const T extends (ParamaterValue<number> | number)[]>(value: T): SumFunction<ToParams<T>>;
-export function sum<const T extends (ParamaterValue<number> | number)[]>(...value: T): SumFunction<ToParams<T>>;
-export function sum(...args: (ParamaterValue<number> | number | (ParamaterValue<number> | number)[])[]): SumFunction {
+export function sum<const T extends ParamaterValue<number> | number>(
+  value: T,
+): SumFunction<[ToParam<T>]>;
+export function sum<const T extends (ParamaterValue<number> | number)[]>(
+  value: T,
+): SumFunction<ToParams<T>>;
+export function sum<const T extends (ParamaterValue<number> | number)[]>(
+  ...value: T
+): SumFunction<ToParams<T>>;
+export function sum(
+  ...args: (
+    | ParamaterValue<number>
+    | number
+    | (ParamaterValue<number> | number)[]
+  )[]
+): SumFunction {
   if (args.length === 1 && Array.isArray(args[0])) {
     return { type: sumFunctionType, value: toParamaterValues(args[0]) };
   }
-  return { type: sumFunctionType, value: toParamaterValues(args as (ParamaterValue<number> | number)[]) };
+  return {
+    type: sumFunctionType,
+    value: toParamaterValues(args as (ParamaterValue<number> | number)[]),
+  };
 }
 
 export function sumFunction(value: Array<ValueType | undefined>): number {
